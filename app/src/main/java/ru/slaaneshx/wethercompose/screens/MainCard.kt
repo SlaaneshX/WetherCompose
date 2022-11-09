@@ -2,9 +2,11 @@ package ru.slaaneshx.wethercompose.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -22,11 +23,11 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import ru.slaaneshx.wethercompose.R
+import ru.slaaneshx.wethercompose.data.WeatherModel
 import ru.slaaneshx.wethercompose.ui.theme.BlueLight
 
-@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun MainCard() {
+fun MainCard(currentDay: MutableState<WeatherModel>) {
     Column(
         modifier = Modifier
             .padding(5.dp)
@@ -47,24 +48,30 @@ fun MainCard() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 8.dp, start = 8.dp),
-                        text = "29 oct 2022 19:20",
+                        text = currentDay.value.time,
                         style = TextStyle(fontSize = 15.sp),
                         color = Color.White
                     )
                     AsyncImage(
-                        model = "https://cdn.weatherapi.com/weather/64x64/day/113.png",
+                        model = "https:${currentDay.value.icon}",
                         contentDescription = "image2",
                         modifier = Modifier.size(35.dp)
                     )
                 }
                 Text(
-                    text = "Madrid", style = TextStyle(fontSize = 23.sp), color = Color.White
+                    text = currentDay.value.city,
+                    style = TextStyle(fontSize = 23.sp),
+                    color = Color.White
                 )
                 Text(
-                    text = "22C", style = TextStyle(fontSize = 65.sp), color = Color.White
+                    text = currentDay.value.currentTemp,
+                    style = TextStyle(fontSize = 65.sp),
+                    color = Color.White
                 )
                 Text(
-                    text = "Sunny", style = TextStyle(fontSize = 16.sp), color = Color.White
+                    text = currentDay.value.condition,
+                    style = TextStyle(fontSize = 16.sp),
+                    color = Color.White
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -78,7 +85,9 @@ fun MainCard() {
                         )
                     }
                     Text(
-                        text = "23/9", style = TextStyle(fontSize = 16.sp), color = Color.White
+                        text = "${currentDay.value.maxTemp}/${currentDay.value.minTemp}",
+                        style = TextStyle(fontSize = 16.sp),
+                        color = Color.White
                     )
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
@@ -96,7 +105,7 @@ fun MainCard() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout() {
+fun TabLayout(daysList: MutableState<List<WeatherModel>>) {
     val pagerState = rememberPagerState()
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
@@ -134,9 +143,12 @@ fun TabLayout() {
             modifier = Modifier.weight(1.0f)
         ) { index ->
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(15) {
-                    ListItem()
+                itemsIndexed(
+                    daysList.value
+                ) { _, item ->
+                    ListItem(item)
                 }
+
             }
         }
     }
