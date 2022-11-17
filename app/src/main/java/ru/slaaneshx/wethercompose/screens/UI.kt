@@ -38,7 +38,9 @@ fun ListItem(item: WeatherModel, currentDay: MutableState<WeatherModel>) {
             .fillMaxWidth()
             .padding(top = 3.dp)
             .clickable {
-                if (item.hours.isEmpty()) return@clickable
+                if (item.hours.isEmpty()) {
+                    return@clickable
+                }
                     currentDay.value = item
             },
         backgroundColor = BlueLight,
