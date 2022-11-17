@@ -52,10 +52,10 @@ class MainActivity : ComponentActivity() {
                         .alpha(0.9f),
                     contentScale = ContentScale.FillBounds
                 )
-                getData("London", this, list, currentDay)
+                getData("Nizhny Novgorod", this, list, currentDay)
                 Column {
                     MainCard(currentDay)
-                    TabLayout(list)
+                    TabLayout(list, currentDay)
                 }
             }
         }
