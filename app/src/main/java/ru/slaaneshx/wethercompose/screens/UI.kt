@@ -37,7 +37,7 @@ fun ListItem(item: WeatherModel, currentDay: MutableState<WeatherModel>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 3.dp)
-            .clickable() {
+            .clickable {
                 if (item.hours.isEmpty()) return@clickable
                     currentDay.value = item
             },

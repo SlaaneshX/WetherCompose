@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WetherComposeTheme() {
+            WetherComposeTheme {
                 val list = remember {
                     mutableStateOf(listOf<WeatherModel>())
                 }
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun getData(
-    city: String = "London",
+    city: String = "Nizhny Novgorod",
     context: Context,
     state: MutableState<List<WeatherModel>>,
     currentDay: MutableState<WeatherModel>

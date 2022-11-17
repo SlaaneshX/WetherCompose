@@ -100,7 +100,6 @@ fun MainCard(currentDay: MutableState<WeatherModel>) {
                         )
                     }
                 }
-
             }
         }
     }
